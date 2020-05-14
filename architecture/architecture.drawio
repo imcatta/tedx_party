@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-14T13:00:42.016Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="Eappa5AN0RnoDsJieYR7" version="13.1.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-14T13:05:09.767Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="_Lg_6QjZE0st5DVv7BYy" version="13.1.1" type="github">
   <diagram id="7dpZataHclQnCBHhR5TN" name="Page-1">
-    <mxGraphModel dx="2858" dy="1033" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2858" dy="1103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -79,20 +79,11 @@
             <mxPoint x="1137" y="1110" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="4ES9V2XQbmjqQQAVPZjq-40" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn2.iconfinder.com/data/icons/freecns-cumulus/16/519964-027_Smartphone-128.png" parent="1" vertex="1">
-          <mxGeometry x="-109" y="980" width="90" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="4ES9V2XQbmjqQQAVPZjq-43" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn3.iconfinder.com/data/icons/glypho-free/64/laptop-128.png;shadow=1;fillColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="-124" y="1090" width="120" height="120" as="geometry" />
-        </mxCell>
         <mxCell id="4ES9V2XQbmjqQQAVPZjq-45" value="" style="pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#000000;shape=mxgraph.mscae.intune.user_group" parent="1" vertex="1">
           <mxGeometry x="-260" y="1130" width="92" height="80" as="geometry" />
         </mxCell>
         <mxCell id="4ES9V2XQbmjqQQAVPZjq-50" value="TedX Scraper" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#ffffff;fillColor=#232F3E;dashed=0;verticalLabelPosition=middle;verticalAlign=bottom;align=center;html=1;whiteSpace=wrap;fontSize=10;fontStyle=1;spacing=3;shape=mxgraph.aws4.productIcon;prIcon=mxgraph.aws4.lambda;" parent="1" vertex="1">
           <mxGeometry x="720" y="1400" width="80" height="100" as="geometry" />
-        </mxCell>
-        <mxCell id="3l8zGak3sCWa_tVM9Evb-1" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/system-black-circles/512/chrome_browser-128.png;fillColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="-115.25" y="1220" width="100.5" height="100.5" as="geometry" />
         </mxCell>
         <mxCell id="3l8zGak3sCWa_tVM9Evb-2" value="Amplify" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;gradientDirection=north;fillColor=#ffbc00;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.amplify;" vertex="1" parent="1">
           <mxGeometry x="206.7" y="890" width="78" height="78" as="geometry" />
@@ -157,6 +148,15 @@
               <mxPoint x="-64" y="698" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="4ES9V2XQbmjqQQAVPZjq-40" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn2.iconfinder.com/data/icons/freecns-cumulus/16/519964-027_Smartphone-128.png" parent="1" vertex="1">
+          <mxGeometry x="-109" y="980" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4ES9V2XQbmjqQQAVPZjq-43" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn3.iconfinder.com/data/icons/glypho-free/64/laptop-128.png;shadow=1;fillColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="-124" y="1090" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="3l8zGak3sCWa_tVM9Evb-1" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/system-black-circles/512/chrome_browser-128.png;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="-115.25" y="1220" width="100.5" height="100.5" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
