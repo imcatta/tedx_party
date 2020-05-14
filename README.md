@@ -1,5 +1,5 @@
 # TEDx Party
-Watch TEDx videos with friends
+Watch TEDx videos with friends. For more information take a look at the [project presentation](https://raw.githubusercontent.com/imcatta/tedx_party/master/project-presentation.pdf).
 
 ### High-level architecture
 ![High-level architecture](https://raw.githubusercontent.com/imcatta/tedx_party/master/architecture/architecture.png)
