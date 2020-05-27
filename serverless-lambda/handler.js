@@ -81,25 +81,34 @@ module.exports.publishReview = async (event, context) => {
 
   // set default
   if (!body.id_talk) {
-    callback(null, {
+    return {
       statusCode: 400, // BAD REQUEST
       headers: { 'Content-Type': 'text/plain' },
       body: 'Could not review any talk. No id is provided.',
-    });
+    };
   }
   if (!body.rate) {
-    callback(null, {
+    return {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
       body: 'Could not review any talk. No rate is provided',
-    });
+    };
   }
   if (!body.username) {
-    callback(null, {
+    return {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
       body: 'Could not review any talk. No username provided',
-    });
+    };
+  }
+
+  // check if the talk exists
+  if (!(await talk.exists({ _id: body.id_talk }))) {
+    return {
+      statusCode: 400,
+      headers: { 'Content-Type': 'text/plain' },
+      body: 'Talk with given id_talk not found',
+    };
   }
 
   // If a review from the same user already exists then
