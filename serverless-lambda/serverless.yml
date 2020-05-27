@@ -1,0 +1,54 @@
+service: serverless-lambda
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-1
+  environment:
+    DB: ${file(./environment.yml):DB}
+
+functions:
+  getByTag:
+    handler: handler.getByTag
+    memorySize: 128
+    layers:
+      - { Ref: CommonLibsLambdaLayer }
+    events:
+      - httpApi:
+          method: POST
+          path: /get-by-tag
+
+  getWatchNext:
+    handler: handler.getWatchNext
+    layers:
+      - { Ref: CommonLibsLambdaLayer }
+    events:
+      - httpApi:
+          method: GET
+          path: /get-watch-next
+
+  getReviews:
+    handler: handler.getReviews
+    layers:
+      - { Ref: CommonLibsLambdaLayer }
+    events:
+      - httpApi:
+          method: GET
+          path: /get-reviews
+
+  publishReview:
+    handler: handler.publishReview
+    memorySize: 128
+    layers:
+      - { Ref: CommonLibsLambdaLayer }
+    events:
+      - httpApi:
+          method: POST
+          path: /publish-review
+
+layers:
+  commonLibs:
+    path: layer
+    compatibleRuntimes:
+      - nodejs12.x
