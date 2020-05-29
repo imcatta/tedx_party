@@ -69,7 +69,7 @@ module.exports.getWatchNext = async (event, context) => {
     
     
     console.log('=> get next talks');
-    talk.aggregate([
+    talk.aggregate(/*[
       {
           '$lookup': {
               'from': 'tedz_data', 
@@ -86,6 +86,37 @@ module.exports.getWatchNext = async (event, context) => {
               '_id': 1, 
               'watch_next_info': 1
           }
+      }
+    ]*/
+    [
+      {
+        '$lookup': {
+          'from': 'tedz_data', 
+          'localField': 'watch_next_ids', 
+          'foreignField': '_id', 
+          'as': 'watch_next_info'
+        }
+      }, {
+        '$match': {
+          '_id': body.id_video
+        }
+      }, {
+        '$unwind': '$watch_next_info'
+      }, {
+        '$sort': {
+          'watch_next_info.rateAverage': -1
+        }
+      }, {
+        '$project': {
+          'watch_next_info': 1
+        }
+      }, {
+        '$group': {
+          '_id': '$_id', 
+          'watch_next': {
+            '$push': '$watch_next_info'
+          }
+        }
       }
     ])
     .then(talk => {
