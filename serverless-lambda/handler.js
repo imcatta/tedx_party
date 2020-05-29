@@ -27,7 +27,7 @@ module.exports.getByTag = (event, context, callback) => {
     body.page = 1;
   }
 
-  connect_to_db().then(() => {
+  db().then(() => {
     console.log('=> get_all talks');
     talk
       .find({ tags: body.tag })
@@ -50,9 +50,8 @@ module.exports.getByTag = (event, context, callback) => {
   });
 };
 
-module.exports.getWatchNext = async (event, context) => {
+module.exports.getWatchNext = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  await db();
 
   let body = {};
   if (event.body) {
@@ -68,28 +67,10 @@ module.exports.getWatchNext = async (event, context) => {
   }
 
   console.log('=> get next talks');
-  talk
-    .aggregate(
-      /*[
-      {
-          '$lookup': {
-              'from': 'tedz_data', 
-              'localField': 'watch_next_ids', 
-              'foreignField': '_id', 
-              'as': 'watch_next_info'
-          }
-      }, {
-          '$match': {
-              '_id': body.id_video
-          }
-      }, {
-          '$project': {
-              '_id': 1, 
-              'watch_next_info': 1
-          }
-      }
-    ]*/
-      [
+
+  db().then(() => {
+    talk
+      .aggregate([
         {
           $lookup: {
             from: 'tedz_data',
@@ -124,26 +105,26 @@ module.exports.getWatchNext = async (event, context) => {
             },
           },
         },
-      ]
-    )
-    .then((talk) => {
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(watch_next),
-      });
-    })
-    .catch((err) =>
-      callback(null, {
-        statusCode: err.statusCode || 500,
-        headers: { 'Content-Type': 'text/plain' },
-        body: 'Could not fetch next talks.',
+      ])
+      .then((talk) => {
+        console.log(talk);
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(talk),
+        });
       })
-    );
+      .catch((err) =>
+        callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'Could not fetch next talks.',
+        })
+      );
+  });
 };
 
-module.exports.getReviews = async (event, context) => {
+module.exports.getReviews = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  await db();
 
   let body = event.body;
   if (!body.id_talk)
@@ -153,24 +134,26 @@ module.exports.getReviews = async (event, context) => {
       body: 'No id has been provided.',
     });
 
-  review
-    .find({ tags: body.id_talk })
-    .sort({ rateAverage: -1 }) // sort by rateAverage
-    .skip(body.rev_per_page * body.page - body.rev_per_page)
-    .limit(body.rev_per_page)
-    .then((reviews) => {
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(reviews),
-      });
-    })
-    .catch((err) =>
-      callback(null, {
-        statusCode: err.statusCode || 500,
-        headers: { 'Content-Type': 'text/plain' },
-        body: 'Could not fetch the reviews.',
+  db().then(() => {
+    review
+      .find({ tags: body.id_talk })
+      .sort({ rateAverage: -1 }) // sort by rateAverage
+      .skip(body.rev_per_page * body.page - body.rev_per_page)
+      .limit(body.rev_per_page)
+      .then((reviews) => {
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(reviews),
+        });
       })
-    );
+      .catch((err) =>
+        callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'Could not fetch the reviews.',
+        })
+      );
+  });
 };
 
 module.exports.publishReview = async (event, context) => {
@@ -243,7 +226,10 @@ module.exports.publishReview = async (event, context) => {
   ]);
 
   // update the talk object with the new rateAverage
-  talk.update({ _id: body.id_talk }, { rateAverage: agg.rateAverage });
+  await talk.update(
+    { _id: body.id_talk },
+    { $set: { rateAverage: agg[0].rateAverage } }
+  );
 
   // return OK
   return {
