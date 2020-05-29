@@ -54,22 +54,23 @@ module.exports.getWatchNext = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   await db();
 
-  let body = {}
-    if (event.body) {
-        body = JSON.parse(event.body)
-    }
-    //BAD REQUEST
-    if(!body.id_video) {
-        callback(null, {
-                    statusCode: 400,
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: 'Could not fetch the next talks. No id is provided.'
-        })
-    }
-    
-    
-    console.log('=> get next talks');
-    talk.aggregate(/*[
+  let body = {};
+  if (event.body) {
+    body = JSON.parse(event.body);
+  }
+  //BAD REQUEST
+  if (!body.id_video) {
+    callback(null, {
+      statusCode: 400,
+      headers: { 'Content-Type': 'text/plain' },
+      body: 'Could not fetch the next talks. No id is provided.',
+    });
+  }
+
+  console.log('=> get next talks');
+  talk
+    .aggregate(
+      /*[
       {
           '$lookup': {
               'from': 'tedz_data', 
@@ -88,50 +89,55 @@ module.exports.getWatchNext = async (event, context) => {
           }
       }
     ]*/
-    [
-      {
-        '$lookup': {
-          'from': 'tedz_data', 
-          'localField': 'watch_next_ids', 
-          'foreignField': '_id', 
-          'as': 'watch_next_info'
-        }
-      }, {
-        '$match': {
-          '_id': body.id_video
-        }
-      }, {
-        '$unwind': '$watch_next_info'
-      }, {
-        '$sort': {
-          'watch_next_info.rateAverage': -1
-        }
-      }, {
-        '$project': {
-          'watch_next_info': 1
-        }
-      }, {
-        '$group': {
-          '_id': '$_id', 
-          'watch_next': {
-            '$push': '$watch_next_info'
-          }
-        }
-      }
-    ])
-    .then(talk => {
-        callback(null, {
-            statusCode: 200,
-            body: JSON.stringify(watch_next)
-        })
-      }
+      [
+        {
+          $lookup: {
+            from: 'tedz_data',
+            localField: 'watch_next_ids',
+            foreignField: '_id',
+            as: 'watch_next_info',
+          },
+        },
+        {
+          $match: {
+            _id: body.id_video,
+          },
+        },
+        {
+          $unwind: '$watch_next_info',
+        },
+        {
+          $sort: {
+            'watch_next_info.rateAverage': -1,
+          },
+        },
+        {
+          $project: {
+            watch_next_info: 1,
+          },
+        },
+        {
+          $group: {
+            _id: '$_id',
+            watch_next: {
+              $push: '$watch_next_info',
+            },
+          },
+        },
+      ]
     )
-    .catch(err =>
-        callback(null, {
-            statusCode: err.statusCode || 500,
-            headers: { 'Content-Type': 'text/plain' },
-            body: 'Could not fetch next talks.'
-        })
+    .then((talk) => {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(watch_next),
+      });
+    })
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Could not fetch next talks.',
+      })
     );
 };
 
@@ -139,33 +145,32 @@ module.exports.getReviews = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   await db();
 
-  let body=event.body;
+  let body = event.body;
   if (!body.id_talk)
     callback(null, {
       statusCode: err.statusCode || 400,
       headers: { 'Content-Type': 'text/plain' },
       body: 'No id has been provided.',
-    })
-  
+    });
+
   review
-      .find({ tags: body.id_talk })
-      .sort({ rateAverage: -1 }) // sort by rateAverage
-      .skip(body.rev_per_page * body.page - body.rev_per_page)
-      .limit(body.rev_per_page)
-      .then((reviews) => {
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(reviews),
-        });
+    .find({ tags: body.id_talk })
+    .sort({ rateAverage: -1 }) // sort by rateAverage
+    .skip(body.rev_per_page * body.page - body.rev_per_page)
+    .limit(body.rev_per_page)
+    .then((reviews) => {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(reviews),
+      });
+    })
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Could not fetch the reviews.',
       })
-      .catch((err) =>
-        callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { 'Content-Type': 'text/plain' },
-          body: 'Could not fetch the reviews.',
-        })
-      );
-  });
+    );
 };
 
 module.exports.publishReview = async (event, context) => {
